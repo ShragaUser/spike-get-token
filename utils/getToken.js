@@ -4,13 +4,13 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 
-
 const initialOptions = require("../initialConfig")();
+
+let token = null;
+
 const getTokenCreator = options => {
     const actualOptions = { ...initialOptions, ...options };
     const { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyRelativePath, useRedis, redisHost } = actualOptions;
-
-    let token = null;
 
     const base64 = data => (new Buffer(data)).toString('base64');
 
