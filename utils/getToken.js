@@ -10,14 +10,15 @@ let token = null;
 
 const getTokenCreator = options => {
     const actualOptions = { ...initialOptions, ...options };
-    const { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyRelativePath, useRedis, redisHost } = actualOptions;
+    const { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyFullPath, useRedis, redisHost } = actualOptions;
 
     const base64 = data => (new Buffer(data)).toString('base64');
+
 
     const getSigningKey = function () {
         if (this.key)
             return this.key;
-        this.key = fs.readFileSync(path.resolve(__dirname, '../../config', spikePublicKeyRelativePath), 'utf8');
+        this.key = fs.readFileSync(spikePublicKeyFullPath, 'utf8');
         return this.key;
     };
 
@@ -51,9 +52,9 @@ const getTokenCreator = options => {
     }
 
     const isValid = unvalidatedToken => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if (unvalidatedToken) {
-                njwt.verify(unvalidatedToken, getSigningKey(), 'RS256', (err, verified) => {
+                njwt.verify(unvalidatedToken, await getSigningKey(), 'RS256', (err, verified) => {
                     if (err)
                         return resolve(false);
                     return resolve(true);
