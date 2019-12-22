@@ -15,7 +15,7 @@ const getTokenCreator = require("spike-get-token");
 const getToken = getTokenCreator(options);
 
 // get token
-const token = getToken();
+const token = await getToken();
 
 /** use token however ... 
 ......................**/
