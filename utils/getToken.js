@@ -6,9 +6,7 @@ const path = require("path");
 
 const initialOptions = require("../initialConfig")();
 
-let token = null;
-
-const getTokenCreator = options => {
+const getTokenCreator = (options) => {
     const actualOptions = { ...initialOptions, ...options };
     const { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyRelativePath, useRedis, redisHost } = actualOptions;
 
@@ -92,15 +90,16 @@ const getTokenCreator = options => {
         return newToken || redisToken;
     }
 
-    const getToken = async () => {
+    async function getToken() {
+        let token = this.token || null;
         if (await isValid(token))
             return token;
-        token = await getAndSaveNewToken();
-        return token;
+        this.token = await getAndSaveNewToken();
+        return this.token;
     }
 
     return getToken;
-}
+};
 
 
 

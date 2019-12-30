@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postversion": "git push --follow-tags",
+    "release": "standard-version"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +17,8 @@
     "path": "^0.12.7",
     "redis": "^2.8.0",
     "util": "^0.12.1"
+  },
+  "devDependencies": {
+    "standard-version": "^7.0.1"
   }
 }
