@@ -15,7 +15,7 @@ const getTokenCreator = require("spike-get-token");
 const getToken = getTokenCreator(options);
 
 // get token
-const token = getToken();
+const token = await getToken();
 
 /** use token however ... 
 ......................**/
@@ -27,11 +27,10 @@ const token = getToken();
 * _ClientId_: Spike given ClientId 
 * _ClientSecret_: Spike given ClientSecret 
 * _spikeURL_: url to Spike server instance 
-* _apiURL_: url to api that requires Spike access_token
 * _tokenGrantType_: type of grant requested from Spike for the access_token
 * _tokenAudience_: access_token audience ( same as api )
 * _tokenRedisKeyName_: key to save token in redis
-* _spikePublicKeyRelativePath_: path to Spike public key for jwt verification ( relative to [```./config/```](./config))
+* _spikePublicKeyFullPath_: path to Spike public key for jwt verification
 * _useRedis_: (Boolean) set to true if usage of redis is required
 
 
