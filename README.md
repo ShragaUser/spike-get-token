@@ -2,11 +2,9 @@
 
 This REPO is a Spike npm module that can be used to recieve oAuth tokens from Spike OAuth2 authorization server. 
 
+[![npm version](https://badge.fury.io/js/spike-get-token.svg)](https://badge.fury.io/js/spike-get-token)
 
-### Install
-```
-npm install spike-get-token
-```
+[![NPM](https://nodei.co/npm/spike-get-token.png)](https://nodei.co/npm/spike-get-token/)
 
 ### Usage
 
