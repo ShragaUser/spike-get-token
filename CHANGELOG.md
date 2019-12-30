@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/ShragaUser/spike-get-token/compare/v1.0.1...v1.0.2) (2019-12-30)
+
+
+### Bug Fixes
+
+* certificatePath uses Full path instead of relative ([295a051](https://github.com/ShragaUser/spike-get-token/commit/295a0510b9927bc88b35f376b6a544769f1c11f0))
+
 ### 1.0.1 (2019-12-30)
 
 

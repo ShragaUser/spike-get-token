@@ -1,12 +1,13 @@
 {
   "name": "spike-get-token",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postversion": "git push --follow-tags",
-    "release": "standard-version"
+    "release": "standard-version",
+    "postrelease": "git push --follow-tags & npm publish"
   },
   "author": "",
   "license": "ISC",
