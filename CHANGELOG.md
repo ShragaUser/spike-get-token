@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/ShragaUser/spike-get-token/compare/v1.0.2...v1.1.0) (2019-12-30)
+
+
+### Features
+
+* waits for redis response before trying spike ([9fc6838](https://github.com/ShragaUser/spike-get-token/commit/9fc68381f5d3b7154f7a01bf6279bdb0b05e42ad))
+
 ### [1.0.2](https://github.com/ShragaUser/spike-get-token/compare/v1.0.1...v1.0.2) (2019-12-30)
 
 
