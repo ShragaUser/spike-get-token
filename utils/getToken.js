@@ -79,16 +79,26 @@ const getTokenCreator = (options) => {
         };
     }
 
-    const getPromises = (useRedis) => useRedis ? [handleTokenFromSpike(), getTokenFromRedis()] : [handleTokenFromSpike(), () => ({})];
+    const redisResponse = async () => {
+        const { err: redisError, redisToken } = useRedis ? await getTokenFromRedis() : {};
+        if (redisToken) {
+            return redisToken;
+        }
+        redisError ? console.error(`redisError: ${redisError}`) : null;
+        return null;
+    }
+
+    const spikeResponse = async () => {
+        const { err: spikeError, newToken } = await handleTokenFromSpike();
+        if (newToken) {
+            return newToken;
+        }
+        spikeError ? console.error(`spikeError: ${spikeError}`) : null;
+        return null;
+    }
 
     const getAndSaveNewToken = async () => {
-        const [{ err: spikeError, newToken }, { err: redisError, redisToken }] = await Promise.all(getPromises(useRedis));
-        if (spikeError && redisError) {
-            console.error(`spikeError: ${spikeError}`);
-            console.error(`redisError: ${redisError}`);
-            return getAndSaveNewToken();
-        }
-        return newToken || redisToken;
+        return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse()) : (await getAndSaveNewToken());
     }
 
     async function getToken() {
