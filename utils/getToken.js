@@ -100,12 +100,13 @@ const getTokenCreator = (options) => {
     const getAndSaveNewToken = async () => {
         return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse()) : (await getAndSaveNewToken());
     }
+    
+    let token
 
     async function getToken() {
-        let token = this.token || null;
         if (await isValid(token))
             return token;
-        this.token = await getAndSaveNewToken();
+        token = await getAndSaveNewToken();
         return this.token;
     }
 
