@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/ShragaUser/spike-get-token/compare/v1.1.0...v1.1.1) (2020-01-01)
+
+
+### Bug Fixes
+
+* multiple getToken functions work ([b610bcd](https://github.com/ShragaUser/spike-get-token/commit/b610bcd5634d7d66d115022c158b7c5e9dd2694b))
+
 ## [1.1.0](https://github.com/ShragaUser/spike-get-token/compare/v1.0.2...v1.1.0) (2019-12-30)
 
 
