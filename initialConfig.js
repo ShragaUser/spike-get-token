@@ -3,13 +3,14 @@ const config = () => ({
     ClientId: 'ClientId',
     ClientSecret: 'ClientSecret',
     spikeURL: 'http://localhost:8080',
-    apiURL: 'http://localhost:3000',
     tokenGrantType: 'client_credentials',
     tokenAudience: 'kartoffel',
     tokenRedisKeyName: 'token',
     // path relative to current folder ( config )
-    spikePublicKeyRelativePath: './key.pem',
-    useRedis: true
+    spikePublicKeyFullPath: './key.pem',
+    useRedis: true,
+    httpsValidation: false,
+    hostHeader: false,
 })
 
 module.exports = config;
