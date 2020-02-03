@@ -3,6 +3,7 @@ const njwt = require("njwt");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
+const https = require("https");
 
 const initialOptions = require("../initialConfig")();
 
@@ -11,21 +12,27 @@ const getTokenCreator = (options) => {
     let token = null;
 
     const actualOptions = { ...initialOptions, ...options };
-    const { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyFullPath, useRedis, redisHost } = actualOptions;
+    let { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyFullPath, useRedis, redisHost, httpsValidation, hostHeader } = actualOptions;
+
+    // For convenience - people can make mistakes
+    spikeURL = actualOptions.spikeUrl || spikeURL; 
+    ClientId = actualOptions.clientId || ClientId;
+    ClientSecret = actualOptions.clientSecret || ClientSecret;
 
     const base64 = data => (new Buffer(data)).toString('base64');
 
 
     const getSigningKey = function () {
         if (this.key)
-            return this.key;
+            return this.key;        
         this.key = fs.readFileSync(spikePublicKeyFullPath, 'utf8');
         return this.key;
     };
 
     const generateSpikeAuthorizationHeaders = () => ({
         'Authorization': `Basic ${base64(ClientId + ":" + ClientSecret)}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...(hostHeader ? { 'Host': spikeURL.split('/')[2] } : {})
     });
 
     const generateSpikeBodyParams = () => ({
@@ -36,9 +43,10 @@ const getTokenCreator = (options) => {
     const handleTokenFromSpike = async () => {
         const headers = generateSpikeAuthorizationHeaders();
         const body = generateSpikeBodyParams();
+        const httpsAgent = !httpsValidation ? { httpsAgent: new https.Agent({ rejectUnauthorized: false })} : {};
 
         try {
-            const { data } = await axios.post(spikeURL, { ...body }, { headers });
+            const { data } = await axios.post(spikeURL, { ...body }, { headers, ...httpsAgent });
             if (!data)
                 return { err: 'No reponse from Spike' };
             const { access_token } = data;

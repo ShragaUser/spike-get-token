@@ -30,6 +30,8 @@ const token = await getToken();
 * _tokenRedisKeyName_: key to save token in redis
 * _spikePublicKeyFullPath_: path to Spike public key for jwt verification
 * _useRedis_: (Boolean) set to true if usage of redis is required
+* _httpsValidation_: (Boolean) set to true if you want to use https validation (default is false)
+* _hostHeader_: (Boolean) add host header to the request (default is false)
 
 
 
