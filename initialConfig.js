@@ -11,6 +11,8 @@ const config = () => ({
     useRedis: true,
     httpsValidation: false,
     hostHeader: false,
+    logger: false,
+    retries: false,
 })
 
 module.exports = config;

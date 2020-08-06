@@ -32,6 +32,8 @@ const token = await getToken();
 * _useRedis_: (Boolean) set to true if usage of redis is required
 * _httpsValidation_: (Boolean) set to true if you want to use https validation (default is false)
 * _hostHeader_: (Boolean) add host header to the request (default is false)
+* _logger_: add your logger function (default is console.log)
+* retries: add the number of retries it will try to get the token before it fails (default is infinty)
 
 
 

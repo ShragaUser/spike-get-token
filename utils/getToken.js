@@ -12,7 +12,11 @@ const getTokenCreator = (options) => {
     let token = null;
 
     const actualOptions = { ...initialOptions, ...options };
-    let { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyFullPath, useRedis, redisHost, httpsValidation, hostHeader } = actualOptions;
+    let { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyFullPath, useRedis, redisHost, httpsValidation, hostHeader, logger, retries } = actualOptions;
+    
+    let counter;
+    if(logger) console.log = logger;
+    if(retries) counter = retries;
 
     // For convenience - people can make mistakes
     spikeURL = actualOptions.spikeUrl || spikeURL; 
@@ -52,7 +56,7 @@ const getTokenCreator = (options) => {
             const { access_token } = data;
             if (useRedis) {
                 const { redisClient } = require(path.resolve(__dirname, "./redisHandler"));
-                const { setValue } = redisClient(redisHost);
+                const { setValue } = redisClient(redisHost, console.log);
                 await setValue(tokenRedisKeyName, access_token);
             }
             return { newToken: access_token };
@@ -77,7 +81,7 @@ const getTokenCreator = (options) => {
     let getTokenFromRedis;
     if (useRedis) {
         const { redisClient } = require(path.resolve(__dirname, "./redisHandler"));
-        const { getValue } = redisClient(redisHost);
+        const { getValue } = redisClient(redisHost, console.log);
 
         getTokenFromRedis = async () => {
             try {
@@ -109,7 +113,15 @@ const getTokenCreator = (options) => {
     }
 
     const getAndSaveNewToken = async () => {
-        return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse()) : (await getAndSaveNewToken());
+        if(retries){ 
+            if (counter > 0){
+                counter -= 1;
+                return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse()) : (await getAndSaveNewToken());
+            } else
+                return null;
+        } else {
+            return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse()) : (await getAndSaveNewToken());
+        }
     }
 
     async function getToken() {
