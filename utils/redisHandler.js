@@ -2,7 +2,8 @@ const redis = require("redis");
 const path = require("path");
 const { promisify } = require("util");
 
-const redisClient = (redisHost) => {
+const redisClient = (redisHost, logger) => {
+    console.log = logger;
     const client = redis.createClient(redisHost);
     const getAsync = promisify(client.get).bind(client);
 

@@ -56,7 +56,7 @@ const getTokenCreator = (options) => {
             const { access_token } = data;
             if (useRedis) {
                 const { redisClient } = require(path.resolve(__dirname, "./redisHandler"));
-                const { setValue } = redisClient(redisHost);
+                const { setValue } = redisClient(redisHost, console.log);
                 await setValue(tokenRedisKeyName, access_token);
             }
             return { newToken: access_token };
@@ -81,7 +81,7 @@ const getTokenCreator = (options) => {
     let getTokenFromRedis;
     if (useRedis) {
         const { redisClient } = require(path.resolve(__dirname, "./redisHandler"));
-        const { getValue } = redisClient(redisHost);
+        const { getValue } = redisClient(redisHost, console.log);
 
         getTokenFromRedis = async () => {
             try {
