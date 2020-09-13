@@ -13,7 +13,8 @@ const getTokenCreator = (options) => {
     let token = null;
 
     const actualOptions = { ...initialOptions, ...options };
-    let { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyFullPath, useRedis, redisHost, httpsValidation, hostHeader, retries } = actualOptions;
+    let { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName,
+    spikePublicKeyFullPath, useRedis, redisHost, httpsValidation, hostHeader, retries = 3, sleepBetweenRetries = 500 } = actualOptions;
 
     // For convenience - people can make mistakes
     spikeURL = actualOptions.spikeUrl || spikeURL; 
@@ -109,9 +110,10 @@ const getTokenCreator = (options) => {
         return null;
     }
 
-    const getAndSaveNewToken = async (retries = 3) => {
+    const getAndSaveNewToken = async (retries) => {
         if (retries) {
-            return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse()) : (await getAndSaveNewToken(retries - 1));
+            return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse())
+             : (await sleep(sleepBetweenRetries), await getAndSaveNewToken(retries - 1));
         }
         console.error('failed getting spike token');
         return null;
