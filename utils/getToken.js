@@ -115,8 +115,7 @@ const getTokenCreator = (options) => {
             return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse())
              : (await sleep(sleepBetweenRetries), await getAndSaveNewToken(retries - 1));
         }
-        console.error('failed getting spike token');
-        return null;
+        throw new Error('failed getting spike token');
     }
 
     async function getToken() {
