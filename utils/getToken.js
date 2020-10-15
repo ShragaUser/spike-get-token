@@ -4,6 +4,7 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 const https = require("https");
+const sleep = require("./sleep");
 
 const initialOptions = require("../initialConfig")();
 
@@ -12,7 +13,8 @@ const getTokenCreator = (options) => {
     let token = null;
 
     const actualOptions = { ...initialOptions, ...options };
-    let { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName, spikePublicKeyFullPath, useRedis, redisHost, httpsValidation, hostHeader } = actualOptions;
+    let { ClientId, ClientSecret, spikeURL, tokenGrantType, tokenAudience, tokenRedisKeyName,
+    spikePublicKeyFullPath, useRedis, redisHost, httpsValidation, hostHeader, retries = 3, sleepBetweenRetries = 500 } = actualOptions;
 
     // For convenience - people can make mistakes
     spikeURL = actualOptions.spikeUrl || spikeURL; 
@@ -108,14 +110,18 @@ const getTokenCreator = (options) => {
         return null;
     }
 
-    const getAndSaveNewToken = async () => {
-        return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse()) : (await getAndSaveNewToken());
+    const getAndSaveNewToken = async (retries) => {
+        if (retries) {
+            return (await redisResponse()) ? (await redisResponse()) : (await spikeResponse()) ? (await spikeResponse())
+             : (await sleep(sleepBetweenRetries), await getAndSaveNewToken(retries - 1));
+        }
+        throw new Error('failed getting spike token');
     }
 
     async function getToken() {
         if (await isValid(token))
             return token;
-        token = await getAndSaveNewToken();
+        token = await getAndSaveNewToken(retries);
         return token;
     }
 
