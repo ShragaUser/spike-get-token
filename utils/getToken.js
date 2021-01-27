@@ -5,8 +5,9 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 const sleep = require("./sleep");
+const validateConfig = require("./validateConfig");
 
-const initialOptions = require("../initialConfig")();
+const initialOptions = require("../initialConfig").config();
 
 const getTokenCreator = (options) => {
     // saves token for this function instance
@@ -20,6 +21,9 @@ const getTokenCreator = (options) => {
     spikeURL = actualOptions.spikeUrl || spikeURL; 
     ClientId = actualOptions.clientId || ClientId;
     ClientSecret = actualOptions.clientSecret || ClientSecret;
+
+    // Validate configuration fields
+    validateConfig({ ...actualOptions, spikeURL, clientId: ClientId, clientSecret: ClientSecret });
 
     const base64 = data => (new Buffer(data)).toString('base64');
 
