@@ -8,7 +8,7 @@ on:
     branches: master
 
 jobs:
-  realease:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,10 +17,10 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - run: npm ci
-      - run: npm run release
       - run: git config --global user.email "dandankidon@gmail.com"
       - run: git config --global user.name "Daniel Kidon"
+      - run: npm ci
+      - run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
