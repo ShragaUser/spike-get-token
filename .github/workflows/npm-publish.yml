@@ -19,6 +19,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - run: npm ci
       - run: npm run release
+      - run: git config --global user.email "dandankidon@gmail.com"
+      - run: git config --global user.name "Daniel Kidon"
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
