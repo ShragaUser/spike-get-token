@@ -19,20 +19,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
       - run: git config --global user.email "dandankidon@gmail.com"
       - run: git config --global user.name "Daniel Kidon"
+      - run: npm config set registry http://registry.npmjs.org
       - run: npm ci
       - run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-
-  publish-gpr:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-          registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
