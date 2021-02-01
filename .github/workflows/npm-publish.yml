@@ -24,8 +24,3 @@ jobs:
       - run: npm-cli-login
       - run: npm ci
       - run: npm run release
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-          NPM_USER: ${{secrets.npm_user}}
-          NPM_PASS: ${{secrets.npm_pass}}
-          NPM_EMAIL: ${{secrets.npm_email}}
