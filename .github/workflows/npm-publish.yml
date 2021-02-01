@@ -24,3 +24,4 @@ jobs:
       - run: npm-cli-login
       - run: npm ci
       - run: npm run release
+    environment: Production
