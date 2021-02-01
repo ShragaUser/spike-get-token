@@ -19,7 +19,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          token:  $${{secrets.NPM_TOKEN}}
+          token:  $${{ secrets.NPM_TOKEN }}
       - run: git config --global user.email "dandankidon@gmail.com"
       - run: git config --global user.name "Daniel Kidon"
       - run: npm ci
