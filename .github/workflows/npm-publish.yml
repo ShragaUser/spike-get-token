@@ -10,18 +10,20 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: "Production"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
+      - uses: filipstefansson/set-npm-token-action@v1.1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          token:  $${{secrets.NPM_TOKEN}}
       - run: git config --global user.email "dandankidon@gmail.com"
       - run: git config --global user.name "Daniel Kidon"
       - run: npm config set registry https://registry.npmjs.org
-      - run: npm install -g npm-cli-login
-      - run: npm-cli-login
+#     - run: npm install -g npm-cli-login
+#     - run: npm-cli-login
       - run: npm ci
       - run: npm run release
-    environment: Production
